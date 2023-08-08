@@ -1,1 +1,22 @@
-void main() {}
+import 'dart:io';
+
+import 'package:ck_console/ck_console.dart';
+
+void main() {
+  CkConsole.log(CkConsole, "Test message");
+  CkConsole.log(
+    CkConsole,
+    "Test message with extra long string for testing that softwarp function which I wasn't sure is correct",
+    logWarning: true,
+  );
+
+  try {
+    if (Platform.isWindows) {
+      throw UnimplementedError("error Error");
+    }
+  } catch (e) {
+    CkConsole.logError(e as Error, "Error");
+  }
+
+  CkConsole.log(CkConsole, "Test complete!", logPass: true);
+}
