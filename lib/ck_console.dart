@@ -19,7 +19,7 @@ class CkConsole {
 
   static const String _resetColor = "\x1B[0m";
 
-  static const int _maxLineLength = 44;
+  static const int _maxLineLength = 50;
 
   static void version() async {
     File f = File("pubspec.yaml");
@@ -42,7 +42,7 @@ class CkConsole {
     bool logPass = false,
   }) {
     assert([logError, logWarning, logPass].where((element) => element == true).length < 2);
-    if (Platform.isWindows) {
+    if (Platform.isWindows | Platform.isAndroid) {
       int labelLength = _maxLineLength + 4;
       int contentLength = _maxLineLength - 5;
       String color = "";
@@ -74,9 +74,9 @@ class CkConsole {
       String message = '> $log ';
       _log(
         label: label,
-        labelLength: _maxLineLength,
+        labelLength: _maxLineLength * 2,
         content: message,
-        contentLength: _maxLineLength,
+        contentLength: _maxLineLength * 2,
         isAndroid: false,
       );
     }
