@@ -92,24 +92,32 @@ class CkConsole {
     if (kDebugMode) {
       print('\n${'[$label] '.padRight(labelLength, '=')}+');
       int messageSegment = (content.length / contentLength).floor();
-      if (messageSegment < 1) {
-        print('${content.padRight(contentLength, ' ')}|');
-        print('${'='.padRight(contentLength, '=')}+');
-      } else {
-        final pattern = RegExp('(.{0,${contentLength - 1}} )|(.*\$)');
-        pattern.allMatches(content).forEach((match) {
-          String msg = match.group(0)!;
-          if (msg.isEmpty) {
-            print('${'='.padRight(contentLength, '=')}+');
-          } else {
-            if (msg.startsWith('>')) {
-              print('${msg.padRight(contentLength, ' ')}|');
+      if (isAndroid) {
+        if (messageSegment < 1) {
+          print('${content.padRight(contentLength, ' ')}|');
+          print('${'='.padRight(contentLength, '=')}+');
+        } else {
+          final pattern = RegExp('(.{0,${contentLength - 1}} )|(.*\$)');
+          String printOut = "";
+          pattern.allMatches(content).forEach((match) {
+            String msg = match.group(0)!;
+            if (msg.isEmpty) {
+              printOut += '${'='.padRight(contentLength, '=')}+';
             } else {
-              msg = "  $msg";
-              print('${msg.padRight(contentLength, ' ')}|');
+              if (msg.startsWith('>')) {
+                printOut += '${msg.padRight(contentLength, ' ')}|';
+              } else {
+                printOut += "\n  $msg";
+              }
             }
-          }
-        });
+          });
+          print(printOut);
+        }
+      } else {
+        /// XCode solution
+        print('[$label]');
+        final pattern = RegExp('.{1,800}'); // 800 is the size of each chunk
+        pattern.allMatches(content).forEach((match) => print(match.group(0)));
       }
     } else {
       //  Log somewhere else
