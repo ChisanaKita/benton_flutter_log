@@ -27,7 +27,7 @@ class CkConsole {
     Map yaml = loadYaml(doc);
     _log(
       label: 'Ck Console Version Check',
-      labelLength: _maxLineLength,
+      labelLength: 45,
       content: '> ${yaml['version']}',
       contentLength: _maxLineLength,
       isAndroid: Platform.isWindows,
@@ -90,22 +90,19 @@ class CkConsole {
     required bool isAndroid,
   }) {
     if (kDebugMode) {
-      print('\n${'[$label] '.padRight(labelLength, '=')}+');
+      print('\n${'[$label] '.padRight(labelLength, '-')}+');
       int messageSegment = (content.length / contentLength).floor();
       if (isAndroid) {
         if (messageSegment < 1) {
-          print('${content.padRight(contentLength, ' ')}|');
-          print('${'='.padRight(contentLength, '=')}+');
+          print(content);
         } else {
           final pattern = RegExp('(.{0,${contentLength - 1}} )|(.*\$)');
           String printOut = "";
           pattern.allMatches(content).forEach((match) {
             String msg = match.group(0)!;
-            if (msg.isEmpty) {
-              printOut += '${'='.padRight(contentLength, '=')}+';
-            } else {
+            if (msg.isNotEmpty) {
               if (msg.startsWith('>')) {
-                printOut += '${msg.padRight(contentLength, ' ')}|';
+                printOut += msg;
               } else {
                 printOut += "\n  $msg";
               }
