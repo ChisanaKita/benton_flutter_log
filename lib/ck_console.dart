@@ -90,11 +90,11 @@ class CkConsole {
     required bool isAndroid,
   }) {
     if (kDebugMode) {
-      print('\n${'[$label] '.padRight(labelLength, '-')}+');
+      debugPrint('\n${'[$label] '.padRight(labelLength, '-')}+');
       int messageSegment = (content.length / contentLength).floor();
       if (isAndroid) {
         if (messageSegment < 1) {
-          print(content);
+          debugPrint(content);
         } else {
           final pattern = RegExp('(.{0,${contentLength - 1}} )|(.*\$)');
           String printOut = "";
@@ -108,13 +108,13 @@ class CkConsole {
               }
             }
           });
-          print(printOut);
+          debugPrint(printOut);
         }
       } else {
         /// XCode solution
-        print('[$label]');
+        debugPrint('[$label]');
         final pattern = RegExp('.{1,800}'); // 800 is the size of each chunk
-        pattern.allMatches(content).forEach((match) => print(match.group(0)));
+        pattern.allMatches(content).forEach((match) => debugPrint(match.group(0)));
       }
     } else {
       //  Log somewhere else
@@ -126,7 +126,7 @@ class CkConsole {
     String? messageOverride,
   ) {
     log(exception.runtimeType, messageOverride ?? exception.toString(), logError: true);
-    print(exception.stackTrace);
+    debugPrint(exception.stackTrace.toString());
   }
 
   static void varDump(Object object) {
